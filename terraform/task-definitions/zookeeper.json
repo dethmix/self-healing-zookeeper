@@ -1,0 +1,54 @@
+[
+	{
+		"name": "zookeeper",
+		"image": "${zookeeper_image}",
+		"cpu": 100,
+		"memory": 512,
+		"essential": true,
+		"portMappings": [
+			{
+				"containerPort": ${zookeeper_port},
+				"hostPort": ${zookeeper_port}
+            },
+			{
+				"containerPort": ${zookeeper_port_communication},
+				"hostPort": ${zookeeper_port_communication}
+            },
+			{
+				"containerPort": ${zookeeper_port_election},
+				"hostPort": ${zookeeper_port_election}
+			}
+		],
+		"environment": [
+			{
+				"name": "ZOO_SERVERS",
+				"value": "${zookeeper-servers}"
+			},
+			{
+				"name": "ZOO_STANDALONE_ENABLED",
+				"value": "false"
+			},
+			{
+				"name": "ZOO_ELECT_PORT_RETRY",
+				"value": "${zookeeper-elect-port-retry}"
+			},
+			{
+				"name": "ZOO_4LW_COMMANDS_WHITELIST",
+				"value": "${zookeeper_4lw_commands_whitelist}"
+			}
+		],
+		"mountPoints": [
+			{
+					"sourceVolume": "resolv",
+					"containerPath": "/etc/resolv.conf"
+			}
+		],
+		"logConfiguration": {
+			"logDriver": "json-file",
+			"options": {
+				"max-size": "100m",
+				"max-file": "10"
+			}
+		}
+	}
+]
