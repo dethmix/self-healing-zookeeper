@@ -52,7 +52,7 @@ fi
 # Write myid only if it doesn't exist
 if [[ ! -f "$ZOO_DATA_DIR/myid" ]]; then
     #next line will generate myid from ECS service index 
-    echo `wget -qO- $ECS_CONTAINER_METADATA_URI/taskWithTags | jq  -r '.TaskTags."aws:ecs:serviceName"' | grep -o "[1-9]"` > "$ZOO_DATA_DIR/myid"
+    echo `wget -qO- $ECS_CONTAINER_METADATA_URI/taskWithTags | jq  -r '.TaskTags."aws:ecs:serviceName"' | grep -oE "[1-9]+$"` > "$ZOO_DATA_DIR/myid"
 fi
 
 
