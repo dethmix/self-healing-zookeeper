@@ -9,4 +9,4 @@ Terraform code can be found in `terraform` directory, just update variable.tf fi
 Dockerfile for building custom Apache Zookeeper image can be found in `docker` directory. It contains only few custom changes in comparing to the original Apache Zookeeper dockerfile. The main one is generation of `myid` from ECS service name.
 
 ## Blog post
-More details about this setup can be found at https://XXXXX
+More details about this setup can be found at https://tech.smartling.com/self-healing-apache-zookeeper-cluster-470b248ccb12
