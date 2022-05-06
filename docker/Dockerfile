@@ -11,7 +11,8 @@ ENV ZOO_CONF_DIR=/conf \
     ZOO_AUTOPURGE_SNAPRETAINCOUNT=3 \
     ZOO_MAX_CLIENT_CNXNS=60 \
     ZOO_STANDALONE_ENABLED=true \
-    ZOO_ADMINSERVER_ENABLED=true
+    ZOO_ADMINSERVER_ENABLED=true \
+    JVMFLAGS=-Dsun.net.inetaddr.ttl=0
 
 # Add a user with an explicit UID/GID and create necessary directories
 RUN set -eux; \
@@ -31,10 +32,14 @@ RUN set -eux; \
         gnupg \
         netcat \
         jq \
+        python3-pip \
         wget; \
     rm -rf /var/lib/apt/lists/*; \
 # Verify that gosu binary works
     gosu nobody true
+
+# Install pip requirement
+RUN pip install boto3 requests
 
 ARG GPG_KEY=BBE7232D7991050B54C8EA0ADC08637CA615D22C
 ARG SHORT_DISTRO_NAME=zookeeper-3.5.6
@@ -80,6 +85,8 @@ EXPOSE 2181 2888 3888 8080
 ENV PATH=$PATH:/$DISTRO_NAME/bin \
     ZOOCFGDIR=$ZOO_CONF_DIR
 
-COPY docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
+COPY zookeeper.py .
+COPY docker-entrypoint.sh .
+
+ENTRYPOINT [ "./docker-entrypoint.sh" ]
 CMD ["zkServer.sh", "start-foreground"]
